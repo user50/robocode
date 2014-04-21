@@ -1,8 +1,9 @@
 package fuck;
 
 import com.example.Vector;
-import com.example.VectorAlgebra;
+import fuck.module.*;
 import robocode.AdvancedRobot;
+import robocode.DeathEvent;
 import robocode.ScannedRobotEvent;
 
 import static com.example.VectorAlgebra.*;
@@ -18,55 +19,43 @@ import static java.lang.Math.sin;
  */
 public class Fucker extends AdvancedRobot
 {
+
+  private boolean alive = true;
+
+  private FireModule fireModule = new SimpleFireModule();
+  private GunModule gunModule = new SimpleGunModule();
+  private RadarModule radarModule = new SimpleRadarModule();
+  private BodyModule bodyModule = new FuckersBody();
+
   private Vector enemy;
+  double enemyHearing;
+  double enemyVelocity;
 
   @Override
   public void run()
   {
-
     setTurnRadarLeftRadians( Double.MAX_VALUE );
 
-    while( true )
+    while( alive )
     {
+      Vector me = new Vector( getX(), getY() );
       if( enemy != null )
       {
-        turnRadar();
-        turnGun();
-        turnBody();
+        setAhead( bodyModule.ahead( me, enemy ) );
+        setTurnLeftRadians( bodyModule.rotate( me, enemy, getHeadingRadians() ) );
+        setTurnRadarLeftRadians( radarModule.angle( getRadarHeadingRadians(), me, enemy ) );
+        setTurnGunLeftRadians( gunModule.angle( getGunHeadingRadians(), me, enemy, enemyHearing, enemyVelocity ) );
+
+        State state = new State();
+        state.enemy = enemy;
+        state.me = me;
+        if( fireModule.isFire(state) )
+          fire( fireModule.power( enemy, me ) );
       }
-
-      setAhead( 100 );
-
-      fire( 2 );
 
       execute();
     }
 
-  }
-
-  private void turnBody()
-  {
-    Vector me = new Vector( getX(), getY() );
-    Vector meToEnemy = VectorAlgebra.diff(enemy, me);
-  }
-
-  private void turnGun()
-  {
-    Vector gunDirection = new Vector( sin( getGunHeadingRadians() ), cos( getGunHeadingRadians() )  );
-
-    Vector me = new Vector( getX(), getY() );
-    double angle = getAngleBetween( gunDirection, VectorAlgebra.diff(enemy, me) );
-
-    setTurnGunLeftRadians( angle );
-  }
-
-  private void turnRadar()
-  {
-    Vector radarDirection = new Vector( sin( getRadarHeadingRadians() ), cos( getRadarHeadingRadians() )  );
-    Vector me = new Vector( getX(), getY() );
-    double angle = getAngleBetween( radarDirection, VectorAlgebra.diff(enemy, me) );
-
-    setTurnRadarLeftRadians( angle + Math.signum( angle ) * Math.toRadians( 10 ) );
   }
 
   @Override
@@ -77,6 +66,15 @@ public class Fucker extends AdvancedRobot
     Vector myToEnemyDirection = rotate( myDirection, -event.getBearingRadians() );
     Vector meToEnemy = prod( myToEnemyDirection, event.getDistance() );
 
+    enemyHearing = event.getHeadingRadians();
+    enemyVelocity = event.getVelocity();
+
     enemy = sum( meToEnemy, me );
+  }
+
+  @Override
+  public void onDeath( DeathEvent event )
+  {
+    alive = false;
   }
 }

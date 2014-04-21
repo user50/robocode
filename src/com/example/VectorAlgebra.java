@@ -1,6 +1,7 @@
 package com.example;
 
 import static java.lang.Math.cos;
+import static java.lang.Math.random;
 import static java.lang.Math.sin;
 
 /**
@@ -12,7 +13,7 @@ import static java.lang.Math.sin;
  */
 public class VectorAlgebra
 {
-  public static double getLength(Vector vector)
+  public static double length( Vector vector )
   {
     return Math.sqrt( vector.getA() * vector.getA() + vector.getB() * vector.getB() );
   }
@@ -52,11 +53,34 @@ public class VectorAlgebra
 
     double sign = vectorProd == 0 ? Math.signum( scalarProd ) : Math.signum( vectorProd ) ;
 
-    return Math.acos( scalarProd / (getLength( v1 ) * getLength( v2 )) ) * sign;
+    return Math.acos( scalarProd / (length( v1 ) * length( v2 )) ) * sign;
   }
 
   public static Vector diff( Vector v1, Vector v2 )
   {
     return new Vector( v1.getA() - v2.getA(), v1.getB() - v2.getB() );
   }
+
+  public static Vector normal( Vector v )
+  {
+    return new Vector( -v.getB(), v.getA() );
+  }
+
+  public static Vector inverse(Vector vector)
+  {
+    return prod( vector, -1 );
+  }
+
+  public static Vector getRandomDirectedVector(double length)
+  {
+    Vector randomVector = new Vector( random() - 0.5, random() - 0.5 );
+
+    return prod( randomVector, length/ length( randomVector ) );
+  }
+
+  public static Vector normalize(Vector vector)
+  {
+    return prod( vector, 1/ length( vector ) );
+  }
+
 }
