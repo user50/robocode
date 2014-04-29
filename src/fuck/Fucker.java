@@ -22,10 +22,10 @@ public class Fucker extends AdvancedRobot
 
   private boolean alive = true;
 
-  private FireModule fireModule = new SimpleFireModule();
-  private GunModule gunModule = new SimpleGunModule();
-  private RadarModule radarModule = new SimpleRadarModule();
-  private BodyModule bodyModule = new FuckersBody();
+  protected FireModule fireModule;
+  protected GunModule gunModule;
+  protected RadarModule radarModule;
+  protected BodyModule bodyModule;
 
   private Vector enemy;
   double enemyHearing;
@@ -49,7 +49,7 @@ public class Fucker extends AdvancedRobot
         State state = new State();
         state.enemy = enemy;
         state.me = me;
-        if( fireModule.isFire(state) )
+        if( fireModule.isFire(me, getGunHeadingRadians(), enemy, enemyHearing, enemyVelocity ) )
           fire( fireModule.power( enemy, me ) );
       }
 

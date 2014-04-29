@@ -37,6 +37,6 @@ public class SimpleGunModule implements GunModule
 
   private int getPredictionTurns(double distanceToEnemy)
   {
-    return (int) distanceToEnemy/20;
+    return (int) distanceToEnemy/40;
   }
 }

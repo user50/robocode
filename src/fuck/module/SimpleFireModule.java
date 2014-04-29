@@ -1,7 +1,6 @@
 package fuck.module;
 
 import com.example.Vector;
-import fuck.State;
 
 import static com.example.VectorAlgebra.diff;
 import static com.example.VectorAlgebra.length;
@@ -24,8 +23,8 @@ public class SimpleFireModule implements FireModule
   }
 
   @Override
-  public boolean isFire( State state)
+  public boolean isFire( Vector me , double gunHearing, Vector enemy, double enemyHearing, double enemyVelocity)
   {
-    return state.enemy != null && length( diff( state.enemy, state.me ) ) < fireRadius;
+    return enemy != null && length( diff( enemy, me ) ) < fireRadius;
   }
 }

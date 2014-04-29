@@ -26,7 +26,7 @@ public class State
 
     Vector rotatedEnemyVelocity = rotate(enemyVelocity, nextState.enemyRotationAngle);
     nextState.enemyAcceleration = calculateAcceleration(length( enemyVelocity ), isEnemyAccelerating);
-    nextState.enemyVelocity = sum( rotatedEnemyVelocity, prod( rotatedEnemyVelocity, nextState.enemyAcceleration ) );
+    nextState.enemyVelocity = sum( rotatedEnemyVelocity, prod( prod( rotatedEnemyVelocity, 1/length( rotatedEnemyVelocity ) ), nextState.enemyAcceleration ) );
     nextState.enemy = sum( enemy, nextState.enemyVelocity );
 
     nextState.bullet = sum( bullet, bulletVelocity );

@@ -83,4 +83,36 @@ public class VectorAlgebra
     return prod( vector, 1/ length( vector ) );
   }
 
+  public static boolean isIntersect(Vector A1, Vector A2, Vector B1, Vector B2)
+  {
+    Vector A = diff( A1, A2 );
+    Vector B = diff( B2, B1 );
+
+    Vector C = diff( B2, A2 );
+
+    double determinant = A.getA()* B.getB() - A.getB()*B.getA();
+
+    double d1 = C.getA()* B.getB() - C.getB()*B.getA();
+    double d2 = A.getA()* C.getB() - A.getB()*C.getA();
+
+    if( determinant == 0 && d1 == 0 && d2 == 0 )
+      return true;
+
+    if( determinant == 0 )
+      return false;
+
+    double k1 = d1/determinant;
+    double k2 = d2/determinant;
+
+    return k1 >= 0 && k1 <= 1 && k2 >= 0 && k2 <= 1;
+  }
+
+  public static boolean isLineIntersectRectangle(Vector X1, Vector X2, Vector center, double length)
+  {
+    return isIntersect( X1, X2, sum( center, new Vector( length / 2, length / 2 ) ), sum( center, new Vector( -length / 2, length / 2 ) ) )
+            || isIntersect( X1, X2, sum( center, new Vector( length / 2, length / 2 ) ), sum( center, new Vector( length / 2, -length / 2 ) ) )
+            || isIntersect( X1, X2, sum( center, new Vector( -length / 2, -length / 2 ) ), sum( center, new Vector( -length / 2, length / 2 ) ) )
+            || isIntersect( X1, X2, sum( center, new Vector( -length / 2, -length / 2 ) ), sum( center, new Vector( length / 2, -length / 2 ) ) );
+  }
+
 }

@@ -20,7 +20,7 @@ public class FuckersBody implements BodyModule
   {
     double distanceToEnemy = length( diff( enemy, me ) );
 
-    if( distanceToEnemy > 500 || distanceToEnemy < 80)
+    if( distanceToEnemy > 100 || distanceToEnemy < 80)
     {
       return  -200;
     }
@@ -40,7 +40,7 @@ public class FuckersBody implements BodyModule
     Vector nextDirection = prod( normalToEnemy, signum( scalarProd( normalToEnemy, myDirection ) ) );
 
     double distanceToEnemy = length( meToEnemy );
-    if( distanceToEnemy > 500 )
+    if( distanceToEnemy > 100 )
       nextDirection = sum( sum( inverse( meToEnemy ), myDirection ), prod( normalToEnemy, (random() - 0.5 )*2 ));
     else if( distanceToEnemy < 80 )
       nextDirection = sum( sum( meToEnemy, myDirection ), prod( normalToEnemy, ( random() - 0.5 )*2 ) );

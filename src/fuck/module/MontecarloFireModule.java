@@ -3,9 +3,9 @@ package fuck.module;
 import com.example.Vector;
 import fuck.State;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import static com.example.VectorAlgebra.*;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,44 +18,76 @@ public class MonteCarloFireModule implements FireModule
 {
   private double power = 2;
 
+  private double maximumX = 1000;
+  private double maximumY = 1000 ;
+
+  private static final int SIMULATION_COUNT = 1000;
+  private static final double TANK_EDGE = 36;
+
   @Override
   public double power( Vector enemy, Vector me )
   {
-    return 0;  //To change body of implemented methods use File | Settings | File Templates.
+    return power;
   }
 
   @Override
-  public boolean isFire( State currentState )
+  public boolean isFire( Vector me , double gunHearing, Vector enemy, double enemyHearing, double enemyVelocity)
   {
-    Random randomizer = new Random(  );
-    List<State> states = new ArrayList<State>(  );
+    double probabilityHitting = evaluateProbability( me, gunHearing, enemy, enemyHearing, enemyVelocity );
 
-    for( int i=0;i<20;i++ )
-      states.add( currentState.nextState() );
+    return probabilityHitting * (4 * power + (power>1 ? 2 * (power - 1) : 0) + 3 * power ) > power * ( 1 - probabilityHitting);
+  }
 
-    boolean stop = false;
-    while( !stop )
+  double evaluateProbability( Vector me, double gunHearing, Vector enemy, double enemyHearing, double enemyVelocity )
+  {
+    State initialState = new State();
+    initialState.me = me;
+    initialState.enemy = enemy;
+    initialState.enemyVelocity = prod( new Vector( sin( enemyHearing ), cos( enemyHearing ) ), enemyVelocity );
+
+    initialState.bullet = me;
+    initialState.bulletVelocity = prod( new Vector( sin( gunHearing ), cos( gunHearing ) ), 20 - power * 3 );
+
+    double count = 0;
+    for( int i=0; i<SIMULATION_COUNT; i++ )
+      if( simulate( initialState ) )
+        count++;
+
+    return count/SIMULATION_COUNT;
+  }
+
+  private boolean simulate(State state)
+  {
+
+    while( true )
     {
-      List<State> nextStates = new ArrayList<State>(  );
-      while( nextStates.size() < 20 )
-      {
-        State state = states.get( randomizer.nextInt(states.size()) ).nextState();
-        if( isTerminal(state) )
+      state = state.nextState();
 
+      if( isTerminal( state ) )
+        return true;
 
-        nextStates.add();
-      }
+      if( isDeafKut(state) )
+        return false;
     }
 
+  }
 
-
-
-
-    return false;
+  private boolean isDeafKut( State state )
+  {
+    return state.bullet.getA() > maximumX || state.bullet.getA() < 0 || state.bullet.getB() > maximumY || state.bullet.getB() < 0;
   }
 
   private boolean isTerminal( State state )
   {
-    return false;
+    Vector currentBulletPosition = state.bullet;
+    Vector previousBulletPosition = diff( currentBulletPosition, state.bulletVelocity );
+    Vector enemy = state.enemy;
+
+    return isLineIntersectRectangle( previousBulletPosition, currentBulletPosition, enemy, TANK_EDGE );
+  }
+
+  public void setPower( double power )
+  {
+    this.power = power;
   }
 }

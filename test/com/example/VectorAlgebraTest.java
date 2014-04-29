@@ -3,6 +3,7 @@ package com.example;
 import org.junit.Test;
 
 import static com.example.VectorAlgebra.getAngleBetween;
+import static com.example.VectorAlgebra.isLineIntersectRectangle;
 import static com.example.VectorAlgebra.rotate;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
@@ -57,5 +58,10 @@ public class VectorAlgebraTest
     assertTrue( abs( angle - PI/4 ) < E  );
   }
 
+  @Test
+  public void testIsLineIntersectRectangle() throws Exception
+  {
+    isLineIntersectRectangle( new Vector( 0, 0 ), new Vector( 130,90 ), new Vector( 50,50 ), 30 );
 
+  }
 }

@@ -1,7 +1,6 @@
 package fuck.module;
 
 import com.example.Vector;
-import fuck.State;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +14,6 @@ public interface FireModule
 
   double power(Vector enemy, Vector me);
 
-  boolean isFire( State state);
+  boolean isFire( Vector me , double gunHearing, Vector enemy, double enemyHearing, double enemyVelocity);
 
 }
