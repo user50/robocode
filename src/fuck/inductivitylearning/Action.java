@@ -5,13 +5,12 @@ package fuck.inductivitylearning;
  */
 public class Action {
 
-    private double ahead;
-    private double turn;
+    private Double ahead;
+    private Double turn;
+    private Double turnRadar;
+    private Double turnGun;
+    private Double shotPower;
 
-    public Action(double ahead, double turn) {
-        this.ahead = ahead;
-        this.turn = turn;
-    }
 
     public double getAhead() {
         return ahead;
@@ -19,5 +18,10 @@ public class Action {
 
     public double getTurn() {
         return turn;
+    }
+
+    @Override
+    public String toString() {
+        return ahead + ";" + turn;
     }
 }
