@@ -1,6 +1,5 @@
-package fuck.modeling;
+package fuck;
 
-import robocode.BattleResults;
 import robocode.control.events.BattleAdaptor;
 import robocode.control.events.BattleCompletedEvent;
 

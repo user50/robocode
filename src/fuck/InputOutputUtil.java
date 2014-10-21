@@ -1,5 +1,7 @@
 package fuck;
 
+import robocode.RobocodeFileOutputStream;
+
 import java.io.*;
 
 /**
@@ -10,7 +12,7 @@ public class InputOutputUtil {
     public static void save(Serializable obj, File file)
     {
         try (
-                OutputStream fileOutputStream = new FileOutputStream(file);
+                OutputStream fileOutputStream = new RobocodeFileOutputStream(file);
                 OutputStream buffer = new BufferedOutputStream(fileOutputStream);
                 ObjectOutput output = new ObjectOutputStream(buffer)
         ){

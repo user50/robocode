@@ -3,8 +3,8 @@ package fuck.inductivitylearning;
 /**
  * Created by user50 on 24.09.2014.
  */
-public interface Function {
+public interface Function<T> {
 
-    public double calculate(Object arguments);
+    public double calculate(T argument);
 
 }

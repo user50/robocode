@@ -1,8 +1,12 @@
 package regression;
 
+import fuck.Action;
+import fuck.InputOutputUtil;
+import fuck.StateParameter;
 import junit.framework.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,5 +42,16 @@ public class RegressionTest {
 
         Assert.assertTrue( Math.abs( y1 - estimate1 ) < 0.1 );
         Assert.assertTrue( Math.abs( y2 - estimate2 ) < 0.1 );
+    }
+
+    @Test
+    public void testFuck() throws Exception {
+        Regression velocityPredictor = new Regression(Arrays.asList( new Constant(),
+                                                    new SimplePow(StateParameter.velocity.name(), 1),
+                                                    new SimplePow(Action.ahead.name(), 1)
+                                                    ));
+
+        InputOutputUtil.save(velocityPredictor, new File("predictors/velocityPredictor"));
+
     }
 }

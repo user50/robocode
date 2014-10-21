@@ -9,15 +9,6 @@ import regression.Regression;
  */
 public enum StateParameter {
 
-    sinMyHeading(new SinMyHeadingRegressionBuilder()), cosMyHeading(null), velocity(null), x(null), y(null);
+    sinMyHeading, cosMyHeading, velocity, x, y, distanceToEnemy, enemyBearing, width, height;
 
-    private RegressionBuilder regressionBuilder;
-
-    StateParameter(RegressionBuilder regressorBuilder) {
-        this.regressionBuilder = regressorBuilder;
-    }
-
-    public RegressionBuilder getRegressionBuilder() {
-        return regressionBuilder;
-    }
 }

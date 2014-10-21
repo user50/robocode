@@ -1,18 +1,15 @@
-package fuck.modeling;
+package fuck;
 
-import fuck.InputOutputUtil;
-import fuck.Snapshot;
+import regression.Regression;
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
 import robocode.control.RobocodeEngine;
-import robocode.control.RobotSpecification;
-import robocode.control.events.BattleAdaptor;
-import robocode.control.events.BattleCompletedEvent;
-import robocode.control.events.IBattleListener;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,7 +38,27 @@ public class Main
 
             System.out.println(battleResult.getScoreDiff());
             List<Snapshot> snapshots = (List<Snapshot>) InputOutputUtil.load("d:\\games\\robocode\\robots\\fuck\\Jeka.data\\snapshots");
+
+            Regression regression = (Regression) InputOutputUtil.load("predictors/velocityPredictor");
+            adapt(regression, snapshots);
+            InputOutputUtil.save(regression,new File("predictors/velocityPredictor"));
+
         }
 
     }
+
+    private static void adapt(Regression regression, List<Snapshot> snapshots) {
+
+        for (Snapshot snapshot : snapshots) {
+            double velocity = snapshot.nextState.get(StateParameter.velocity);
+            Map<String,Double> input = new HashMap<>();
+
+            input.put(Action.ahead.name(), snapshot.actions.get(Action.ahead));
+            input.put(StateParameter.velocity.name(), snapshot.state.get(StateParameter.velocity));
+
+            regression.adapt(input, velocity, 0.001);
+        }
+
+    }
+
 }

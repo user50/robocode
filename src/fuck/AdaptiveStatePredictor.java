@@ -19,9 +19,9 @@ public class AdaptiveStatePredictor implements StatePredictor {
     Map<StateParameter, Regression> regressions = new HashMap<>();
 
     public AdaptiveStatePredictor() {
-        for (StateParameter stateParameter : StateParameter.values())
-            if (stateParameter.getRegressionBuilder() != null)
-                regressions.put(stateParameter, stateParameter.getRegressionBuilder().build());
+//        for (StateParameter stateParameter : StateParameter.values())
+//            if (stateParameter.getRegressionBuilder() != null)
+//                regressions.put(stateParameter, stateParameter.getRegressionBuilder().build());
     }
 
     @Override

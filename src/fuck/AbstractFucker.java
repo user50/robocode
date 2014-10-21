@@ -1,10 +1,6 @@
 package fuck;
 
-import robocode.AdvancedRobot;
-import robocode.BattleEndedEvent;
-import robocode.RobotDeathEvent;
-import robocode.RoundEndedEvent;
-import sun.misc.IOUtils;
+import robocode.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,6 +22,8 @@ public abstract class AbstractFucker extends AdvancedRobot {
 
     Map<Action, Double> previousActions;
     Map<StateParameter, Double> previousState;
+
+    ScannedRobotEvent lastScannedEnemy;
 
     @Override
     public void run() {
@@ -68,6 +66,15 @@ public abstract class AbstractFucker extends AdvancedRobot {
         parameters.put(StateParameter.x, getX());
         parameters.put(StateParameter.y, getY());
 
+        if (lastScannedEnemy != null)
+        {
+            parameters.put(StateParameter.distanceToEnemy, lastScannedEnemy.getDistance());
+            parameters.put(StateParameter.enemyBearing, lastScannedEnemy.getBearingRadians());
+        }
+
+        parameters.put(StateParameter.width, getBattleFieldWidth());
+        parameters.put(StateParameter.height, getBattleFieldHeight());
+
         return parameters;
     }
 
@@ -79,6 +86,11 @@ public abstract class AbstractFucker extends AdvancedRobot {
     @Override
     public void onRobotDeath(RobotDeathEvent event) {
         stop = true;
+    }
+
+    @Override
+    public void onScannedRobot(ScannedRobotEvent event) {
+        lastScannedEnemy = event;
     }
 
     protected abstract Map<Action, Double> makeAction();
