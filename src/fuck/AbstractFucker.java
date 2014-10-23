@@ -60,8 +60,7 @@ public abstract class AbstractFucker extends AdvancedRobot {
     {
         Map<StateParameter, Double> parameters = new HashMap<StateParameter, Double>();
 
-        parameters.put(StateParameter.cosMyHeading, cos(getHeadingRadians()));
-        parameters.put(StateParameter.sinMyHeading, sin(getHeadingRadians()));
+        parameters.put(StateParameter.hearing, getHeadingRadians());
         parameters.put(StateParameter.velocity, getVelocity());
         parameters.put(StateParameter.x, getX());
         parameters.put(StateParameter.y, getY());

@@ -14,10 +14,11 @@ public abstract class AssKicker extends AbstractFucker {
     UtilityCalculator utilityCalculator;
     PreProcess preProcess;
 
-    protected AssKicker(StatePredictor statePredictor, Optimiser optimiser, UtilityCalculator utilityCalculator) {
+    protected AssKicker(StatePredictor statePredictor, Optimiser optimiser, UtilityCalculator utilityCalculator, PreProcess preProcess) {
         this.statePredictor = statePredictor;
         this.optimiser = optimiser;
         this.utilityCalculator = utilityCalculator;
+        this.preProcess = preProcess;
     }
 
     @Override

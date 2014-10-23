@@ -4,9 +4,13 @@ import com.example.Vector;
 import fuck.impl.MadeByHandsPredictor;
 import fuck.impl.MadeByHandsUtilityCalculator;
 import fuck.impl.SimplestOptimiser;
+import fuck.inductivitylearning.PreProcess;
+import fuck.preprocessors.Hearing2sinAndCos;
 import robocode.ScannedRobotEvent;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.VectorAlgebra.getAngleBetween;
@@ -21,7 +25,7 @@ public class SuperJeka extends AssKicker {
 
     public SuperJeka()
     {
-        super(new MadeByHandsPredictor(), new SimplestOptimiser(), new MadeByHandsUtilityCalculator());
+        super(new MadeByHandsPredictor(), new SimplestOptimiser(), new MadeByHandsUtilityCalculator(), new PreProcess().with(new Hearing2sinAndCos()));
     }
 
     @Override
