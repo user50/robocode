@@ -53,7 +53,7 @@ public class Main
             double velocity = snapshot.nextState.get(StateParameter.velocity);
             Map<String,Double> input = new HashMap<>();
 
-            input.put(Action.ahead.name(), snapshot.actions.get(Action.ahead));
+            input.put(Action.ahead.name(), snapshot.actions.get(Action.ahead)/200);
             input.put(StateParameter.velocity.name(), snapshot.state.get(StateParameter.velocity));
 
             regression.adapt(input, velocity, 0.001);

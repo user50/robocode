@@ -19,8 +19,6 @@ import static java.lang.Math.sin;
  */
 public class Jeka extends AbstractFucker {
 
-    private Double enemyBearing = null;
-
     @Override
     protected Map<Action, Double> initAction() {
         Map<Action, Double> actions = new HashMap<Action, Double>();
@@ -34,7 +32,7 @@ public class Jeka extends AbstractFucker {
     protected Map<Action, Double> makeAction() {
         Map<Action, Double> actions = new HashMap<Action, Double>();
 
-        if (enemyBearing != null){
+        if (lastScannedEnemy != null){
             Vector radarDirection = new Vector(sin(getRadarHeadingRadians()), cos(getRadarHeadingRadians()));
             Double radarRotateAngle = getRotateAngleToEnemy(radarDirection);
 
@@ -49,7 +47,7 @@ public class Jeka extends AbstractFucker {
             actions.put(Action.shotPower, 1.2);
 
             Vector myDirection = new Vector(sin(getHeadingRadians()), cos(getHeadingRadians()));
-            Vector enemyDirection = rotate(myDirection, -enemyBearing);
+            Vector enemyDirection = rotate(myDirection, -lastScannedEnemy.getBearingRadians());
             double bodyRotateAngle = getAngleBetween(myDirection, normal(enemyDirection));
 
             actions.put(Action.rotate, bodyRotateAngle);
@@ -64,14 +62,9 @@ public class Jeka extends AbstractFucker {
 
     private double getRotateAngleToEnemy(Vector vector){
         Vector myDirection = new Vector(sin(getHeadingRadians()), cos(getHeadingRadians()));
-        Vector enemyDirection = rotate(myDirection, -enemyBearing);
+        Vector enemyDirection = rotate(myDirection, -lastScannedEnemy.getBearingRadians());
 
         return  getAngleBetween(vector, enemyDirection);
-    }
-
-    @Override
-    public void onScannedRobot(ScannedRobotEvent event) {
-        enemyBearing = event.getBearingRadians();
     }
 
     @Override

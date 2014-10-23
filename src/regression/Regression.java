@@ -31,8 +31,13 @@ public class Regression implements Serializable {
     {
         double estimate = calculate(inputs);
 
-        for (Parameter parameter : parameters)
+        for (Parameter parameter : parameters) {
+            System.out.print(parameter.value + " ");
+
             parameter.value += alpha * (output - estimate) * parameter.regressor.calculate(inputs);
+        }
+
+        System.out.println();
 
     }
 

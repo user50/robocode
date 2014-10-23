@@ -1,9 +1,6 @@
 package fuck;
 
-import fuck.inductivitylearning.Function;
-import fuck.inductivitylearning.Optimiser;
-import fuck.inductivitylearning.StatePredictor;
-import fuck.inductivitylearning.UtilityCalculator;
+import fuck.inductivitylearning.*;
 
 import java.util.Map;
 
@@ -15,6 +12,7 @@ public abstract class AssKicker extends AbstractFucker {
     StatePredictor statePredictor;
     Optimiser optimiser;
     UtilityCalculator utilityCalculator;
+    PreProcess preProcess;
 
     protected AssKicker(StatePredictor statePredictor, Optimiser optimiser, UtilityCalculator utilityCalculator) {
         this.statePredictor = statePredictor;
@@ -25,7 +23,7 @@ public abstract class AssKicker extends AbstractFucker {
     @Override
     protected Map<Action, Double> makeAction() {
 
-        final Map<StateParameter, Double> state = getState();
+        final Map<StateParameter, Double> state = preProcess.process(getState());
         Function<Map<Action, Double>> function = new Function<Map<Action, Double>>()
         {
 
