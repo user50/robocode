@@ -9,6 +9,10 @@ import regression.Regression;
  */
 public enum StateParameter {
 
-    sinMyHeading, cosMyHeading, velocity, x, y, distanceToEnemy, enemyBearing, width, height, hearing;
+    /* primary */
+    velocity, x, y, distanceToEnemy, enemyBearing, width, height, enemyHearing, enemyVelocity, gunHearing, hearing,
+
+    /* secondary */
+    sinMyHeading, cosMyHeading, gunSin, gunCos, enemyDirectionX, enemyDirectionY
 
 }

@@ -10,6 +10,6 @@ import java.util.Map;
  */
 public interface Optimiser {
 
-    public Map<fuck.Action, Double> solve(Function<Map<Action, Double>> function);
+    public Map<fuck.Action, Double> findOptimalSolution(Function<Map<Action, Double>> function);
 
 }

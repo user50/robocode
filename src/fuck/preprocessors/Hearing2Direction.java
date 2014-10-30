@@ -12,7 +12,7 @@ import static java.lang.Math.sin;
 /**
  * Created by user50 on 23.10.2014.
  */
-public class Hearing2sinAndCos implements Handler {
+public class Hearing2Direction implements Handler {
     @Override
     public void process(Map<StateParameter, Double> state) {
         state.put(sinMyHeading, sin(state.get(hearing)));

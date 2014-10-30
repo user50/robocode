@@ -2,6 +2,9 @@ package fuck;
 
 import robocode.AdvancedRobot;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by user50 on 12.10.2014.
  */
@@ -65,4 +68,15 @@ public enum Action {
     public abstract void applyAction(AdvancedRobot robot, double value);
 
     public abstract double generateRandomValidValue();
+
+
+    public static Map<Action, Double> generateRandomAction()
+    {
+        Map<Action, Double> decision = new HashMap<>();
+
+        for (Action action : Action.values())
+            decision.put(action, action.generateRandomValidValue());
+
+        return decision;
+    }
 }

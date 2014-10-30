@@ -1,16 +1,14 @@
 package fuck;
 
-import com.example.Vector;
-import fuck.inductivitylearning.StatePredictor;
-import robocode.AdvancedRobot;
-import robocode.BattleEndedEvent;
-import robocode.ScannedRobotEvent;
+import fuck.algebra.Vector;
+import fuck.algebra.VectorAlgebra;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.VectorAlgebra.*;
+import static fuck.algebra.VectorAlgebra.*;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -20,7 +18,7 @@ import static java.lang.Math.sin;
 public class Jeka extends AbstractFucker {
 
     @Override
-    protected Map<Action, Double> initAction() {
+    protected Map<Action, Double> specifyInitActions() {
         Map<Action, Double> actions = new HashMap<Action, Double>();
 
         actions.put(Action.rotateRadar, 100.0);
@@ -29,7 +27,7 @@ public class Jeka extends AbstractFucker {
     }
 
     @Override
-    protected Map<Action, Double> makeAction() {
+    protected Map<Action, Double> specifyActions() {
         Map<Action, Double> actions = new HashMap<Action, Double>();
 
         if (lastScannedEnemy != null){
@@ -67,8 +65,4 @@ public class Jeka extends AbstractFucker {
         return  getAngleBetween(vector, enemyDirection);
     }
 
-    @Override
-    public void onPaint(Graphics2D g) {
-        super.onPaint(g);
-    }
 }

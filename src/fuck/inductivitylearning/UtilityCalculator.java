@@ -9,5 +9,5 @@ import java.util.Map;
  */
 public interface UtilityCalculator {
 
-    public double calculate(Map<StateParameter, Double> state);
+    public double assessState(Map<StateParameter, Double> state);
 }

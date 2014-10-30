@@ -1,10 +1,11 @@
 package com.example;
 
+import fuck.algebra.Vector;
 import org.junit.Test;
 
-import static com.example.VectorAlgebra.getAngleBetween;
-import static com.example.VectorAlgebra.isLineIntersectRectangle;
-import static com.example.VectorAlgebra.rotate;
+import static fuck.algebra.VectorAlgebra.getAngleBetween;
+import static fuck.algebra.VectorAlgebra.isLineIntersectRectangle;
+import static fuck.algebra.VectorAlgebra.rotate;
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static org.junit.Assert.assertTrue;

@@ -1,4 +1,4 @@
-package com.example;
+package fuck.algebra;
 
 /**
  * Created with IntelliJ IDEA.
