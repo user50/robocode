@@ -1,18 +1,17 @@
 package fuck;
 
-import fuck.algebra.Vector;
-import fuck.algebra.VectorAlgebra;
+import algebra.Vector;
+import algebra.VectorAlgebra;
 import robocode.*;
 
 import java.awt.*;
 import java.awt.geom.Line2D;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static fuck.algebra.VectorAlgebra.rotate;
+import static algebra.VectorAlgebra.rotate;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -20,6 +19,8 @@ import static java.lang.Math.sin;
  * Created by user50 on 12.10.2014.
  */
 public abstract class AbstractFucker extends AdvancedRobot {
+
+    private List<Listener> listeners = new ArrayList<>();
 
     private boolean stop = false;
 
@@ -32,6 +33,7 @@ public abstract class AbstractFucker extends AdvancedRobot {
 
     @Override
     public void run() {
+        init();
         applyActions(specifyInitActions());
 
         while (!stop)
@@ -45,6 +47,11 @@ public abstract class AbstractFucker extends AdvancedRobot {
 
             execute();
         }
+    }
+
+    protected void init()
+    {
+
     }
 
     private void applyActions(Map<Action, Double> actions)
@@ -86,16 +93,6 @@ public abstract class AbstractFucker extends AdvancedRobot {
     }
 
     @Override
-    public void onBattleEnded(BattleEndedEvent event) {
-        InputOutputUtil.save((Serializable) snapshots, getDataFile("snapshots"));
-    }
-
-    @Override
-    public void onRobotDeath(RobotDeathEvent event) {
-        stop = true;
-    }
-
-    @Override
     public void onScannedRobot(ScannedRobotEvent event) {
         lastScannedEnemy = event;
     }
@@ -116,5 +113,21 @@ public abstract class AbstractFucker extends AdvancedRobot {
         enemyDirection = VectorAlgebra.prod(enemyDirection, 1000);
         g.setColor(Color.orange);
         g.draw(new Line2D.Double(getX(),getY(),(getX() + enemyDirection.getA()), (getY() + enemyDirection.getB()) ));
+    }
+
+    @Override
+    public void onRoundEnded(RoundEndedEvent event) {
+        for (Listener listener : listeners)
+            listener.onRoundEnded();
+    }
+
+    @Override
+    public void onRobotDeath(RobotDeathEvent event) {
+        stop = true;
+    }
+
+    public void addListener(Listener listener)
+    {
+        listeners.add(listener);
     }
 }

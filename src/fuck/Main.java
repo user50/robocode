@@ -1,15 +1,15 @@
 package fuck;
 
-import regression.Regression;
+import database.HibernateUtil;
+import database.State;
+import org.hibernate.Session;
 import robocode.control.BattleSpecification;
 import robocode.control.BattlefieldSpecification;
 import robocode.control.RobocodeEngine;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class Main
 {
-    private final static String ROBOT_NAME = "fuck.Jeka*";
+    private final static String ROBOT_NAME = "fuck.SuperJeka";
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
         RobocodeEngine engine = new RobocodeEngine(new File("d:\\games\\robocode"));
@@ -29,36 +29,40 @@ public class Main
 
 //      engine.addBattleListener(new Listener() );
 
-        BattleSpecification specification = new BattleSpecification(1, new BattlefieldSpecification(1000, 1000), engine.getLocalRepository(ROBOT_NAME+", apollokidd.ApolloKidd"));
+        BattleSpecification specification = new BattleSpecification(1, new BattlefieldSpecification(800, 600), engine.getLocalRepository("fuck.SuperJeka, froh.micro.Aversari"));
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 1000; i++) {
             engine.runBattle(specification);
 
             engine.waitTillBattleOver();
 
-            System.out.println(battleResult.getScoreDiff());
-            List<Snapshot> snapshots = (List<Snapshot>) InputOutputUtil.load("d:\\games\\robocode\\robots\\fuck\\Jeka.data\\snapshots");
+            double diff = battleResult.getScoreDiff();
+            try {
+                List<Snapshot> snapshots = (List<Snapshot>) InputOutputUtil.load("D:\\games\\robocode\\robots\\.data\\fuck\\SuperJeka.data\\snapshots");
+                System.out.println(new File("D:\\games\\robocode\\robots\\.data\\fuck\\SuperJeka.data\\snapshots").delete());
 
-            Regression regression = (Regression) InputOutputUtil.load("predictors/velocityPredictor");
-            adapt(regression, snapshots);
-            InputOutputUtil.save(regression,new File("predictors/velocityPredictor"));
-
+                adapt(snapshots, diff);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println(new File("D:\\games\\robocode\\robots\\.data\\fuck\\SuperJeka.data\\snapshots").delete());
+            }
         }
 
     }
 
-    private static void adapt(Regression regression, List<Snapshot> snapshots) {
+    private static void adapt(List<Snapshot> snapshots, double diff) {
 
-        for (Snapshot snapshot : snapshots) {
-            double velocity = snapshot.nextState.get(StateParameter.velocity);
-            Map<String,Double> input = new HashMap<>();
+    }
 
-            input.put(Action.ahead.name(), snapshot.actions.get(Action.ahead)/200);
-            input.put(StateParameter.velocity.name(), snapshot.state.get(StateParameter.velocity));
-
-            regression.adapt(input, velocity, 0.001);
-        }
-
+    private static void save(final List<Snapshot> snapshots, final double scoreDiff) {
+        HibernateUtil.execute(new HibernateUtil.Update() {
+            @Override
+            public void execute(Session session) {
+                for (Snapshot snapshot : snapshots) {
+                    session.save(new State(snapshot.state, scoreDiff));
+                }
+            }
+        });
     }
 
 }

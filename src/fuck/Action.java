@@ -9,66 +9,74 @@ import java.util.Map;
  * Created by user50 on 12.10.2014.
  */
 public enum Action {
-    ahead {
+    ahead(-200, 200) {
         @Override
         public void applyAction(AdvancedRobot robot, double value) {
             robot.setAhead(value);
         }
-
-        @Override
-        public double generateRandomValidValue() {
-            return Math.random() * 400 - 200;
-        }
     },
-    rotate {
+    rotate(-Math.PI * 30 / 180, Math.PI * 30 / 180) {
         @Override
         public void applyAction(AdvancedRobot robot, double value) {
             robot.setTurnLeftRadians(value);
         }
-
-        @Override
-        public double generateRandomValidValue() {
-            return Math.random() * 2 * Math.PI - Math.PI;
-        }
     },
-    rotateGun {
+    rotateGun(-Math.PI * 20 / 180, Math.PI * 20 / 180) {
         @Override
         public void applyAction(AdvancedRobot robot, double value) {
             robot.setTurnGunLeftRadians(value);
         }
-
-        @Override
-        public double generateRandomValidValue() {
-            return Math.random() * 2 * Math.PI - Math.PI;
-        }
     },
-    rotateRadar {
+    rotateRadar(-Math.PI * 45 / 180, Math.PI * 45 / 180) {
         @Override
         public void applyAction(AdvancedRobot robot, double value) {
             robot.setTurnRadarLeftRadians(value);
         }
 
-        @Override
-        public double generateRandomValidValue() {
-            return Math.random() * 2 * Math.PI - Math.PI;
-        }
     },
-    shotPower {
+    shotPower(0, 2) {
         @Override
         public void applyAction(AdvancedRobot robot, double value) {
             robot.fire(value);
         }
-
-        @Override
-        public double generateRandomValidValue() {
-            return Math.random() * 2;
-        }
     };
+
+    private double min;
+    private double max;
+
+    Action(double min, double max) {
+        this.min = min;
+        this.max = max;
+    }
+
+    public double getMin() {
+        return min;
+    }
+
+    public double getMax() {
+        return max;
+    }
 
     public abstract void applyAction(AdvancedRobot robot, double value);
 
-    public abstract double generateRandomValidValue();
+    public double generateRandomValidValue()
+    {
+        return Math.random() * ( getMax() - getMin() ) - getMax();
+    }
 
+    public static void normalise(Map<Action, Double> actions)
+    {
+        for (Action action : actions.keySet())
+            actions.put( action, actions.get(action)/ (action.getMax() - action.getMin()) );
+
+    }
+
+    public static void denormalise(Map<Action, Double> actions)
+    {
+        for (Action action : actions.keySet())
+            actions.put( action, actions.get(action) * (action.getMax()) );
+
+    }
 
     public static Map<Action, Double> generateRandomAction()
     {

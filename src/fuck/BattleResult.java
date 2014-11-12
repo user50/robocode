@@ -19,7 +19,7 @@ public class BattleResult extends BattleAdaptor {
     @Override
     public void onBattleCompleted(BattleCompletedEvent event) {
         synchronized (this) {
-            if (event.getIndexedResults()[0].getTeamLeaderName().equals(robotName)) {
+            if (event.getIndexedResults()[0].getTeamLeaderName().contains(robotName)) {
                 scoreDiff = event.getIndexedResults()[0].getScore() - event.getIndexedResults()[1].getScore();
             } else {
                 scoreDiff = event.getIndexedResults()[1].getScore() - event.getIndexedResults()[0].getScore();
@@ -30,9 +30,6 @@ public class BattleResult extends BattleAdaptor {
     }
 
     public synchronized double getScoreDiff() throws InterruptedException {
-        while (this.scoreDiff == null) {
-            wait(5000);
-        }
 
         Integer scoreDiff = this.scoreDiff;
         this.scoreDiff = null;

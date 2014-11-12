@@ -1,14 +1,11 @@
 package fuck;
 
-import fuck.algebra.Vector;
-import fuck.algebra.VectorAlgebra;
+import algebra.Vector;
 
-import java.awt.*;
-import java.awt.geom.Line2D;
 import java.util.HashMap;
 import java.util.Map;
 
-import static fuck.algebra.VectorAlgebra.*;
+import static algebra.VectorAlgebra.*;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
@@ -50,7 +47,7 @@ public class Jeka extends AbstractFucker {
 
             actions.put(Action.rotate, bodyRotateAngle);
 
-            actions.put(Action.ahead, (Math.random() - 0.5) * 200 );
+            actions.put(Action.ahead, (Math.random() - 0.5) * 300 );
         }
 
 
